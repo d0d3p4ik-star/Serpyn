@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Официальный сайт предвыборной кампании Мади — кандидата в президенты NIS от кампании Serpyn">
+    <title>NIS Serpyn — Импульс нового поколения</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="./лого серпин.png">
+
+    <style>
+    /* ================================================================
+       RESET & CSS VARIABLES
+    ================================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --dark-green:   #1B4D2E;
+        --mid-green:    #2D6A40;
+        --bright-green: #78BE20;
+        --lime:         #82C341;
+        --gold:         #D4AF37;
+        --gold-light:   #E8C84F;
+        --gold-dark:    #B8960C;
+        --white:        #FFFFFF;
+        --off-white:    #F4F6F8;
+        --text-dark:    #0D2618;
+        --text-gray:    #5a7260;
+        --r-sm: 12px;
+        --r-md: 20px;
+        --r-lg: 28px;
+        --ease: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: 'Montserrat', sans-serif; color: var(--text-dark); overflow-x: hidden; background: var(--white); -webkit-font-smoothing: antialiased; }
+    img  { display: block; max-width: 100%; }
+    a    { text-decoration: none; }
+    ul   { list-style: none; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar       { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a1f11; }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    /* ================================================================
+       NAVBAR
+    ================================================================ */
+    .navbar {
+        position: fixed; top: 0; left: 0; right: 0;
+        z-index: 1000; padding: 14px 0;
+        transition: var(--ease);
+    }
+    .navbar.scrolled {
+        background: rgba(15, 45, 25, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 10px 0;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.35);
+    }
+    .nav-inner {
+        max-width: 1200px; margin: 0 auto; padding: 0 28px;
+        display: flex; align-items: center; justify-content: space-between; gap: 20px;
+    }
+    .nav-brand {
+        display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+    }
+    .nav-logo-img {
+        width: 44px; height: 44px; border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(212,175,55,0.5);
+        box-shadow: 0 0 14px rgba(120,190,32,0.35);
+    }
+    .nav-brand-text { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: .5px; }
+    .nav-brand-text em { font-style: normal; color: var(--gold); }
+
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-links a {
+        color: rgba(255,255,255,.8); font-size: 13px; font-weight: 600;
+        padding: 8px 14px; border-radius: 8px; letter-spacing: .3px;
+        transition: var(--ease);
+    }
+    .nav-links a:hover { color: var(--gold); background: rgba(212,175,55,.12); }
+
+    /* Burger */
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; border-radius: 8px; transition: var(--ease); }
+    .burger:hover { background: rgba(255,255,255,.1); }
+    .burger span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: var(--ease); }
+    .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile Overlay */
+    .mob-overlay {
+        position: fixed; inset: 0; z-index: 998;
+        background: rgba(10, 30, 16, 0.97);
+        backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+        opacity: 0; pointer-events: none;
+        transition: opacity .4s ease;
+    }
+    .mob-overlay.open { opacity: 1; pointer-events: all; }
+    .mob-overlay a {
+        color: rgba(255,255,255,.85); font-size: 22px; font-weight: 700;
+        padding: 14px 48px; border-radius: 12px; letter-spacing: .5px;
+        width: 100%; max-width: 280px; text-align: center;
+        transition: var(--ease);
+    }
+    .mob-overlay a:hover { color: var(--gold); background: rgba(212,175,55,.1); }
+    .mob-close {
+        position: absolute; top: 24px; right: 28px;
+        color: rgba(255,255,255,.55); font-size: 32px; cursor: pointer; line-height: 1;
+        transition: var(--ease);
+    }
+    .mob-close:hover { color: var(--gold); }
+
+    /* ================================================================
+       HERO
+    ================================================================ */
+    .hero {
+        min-height: 100vh;
+        background: linear-gradient(150deg, #061810 0%, #1B4D2E 45%, #0F3520 70%, #091510 100%);
+        display: flex; align-items: center; position: relative; overflow: hidden;
+    }
+
+    /* Ambient Orbs */
+    .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(120,190,32,.12), transparent 68%); top: -120px; right: -120px; animation: orbDrift 14s ease-in-out infinite; }
+    .orb-2 { width: 450px; height: 450px; background: radial-gradient(circle, rgba(212,175,55,.09), transparent 68%); bottom: -100px; left: -80px; animation: orbDrift 10s ease-in-out infinite reverse; }
+    .orb-3 { width: 320px; height: 320px; background: radial-gradient(circle, rgba(120,190,32,.07), transparent 68%); top: 42%; left: 38%; animation: orbDrift 18s ease-in-out infinite 3s; }
+    @keyframes orbDrift { 0%,100%{transform:translate(0,0) scale(1);} 33%{transform:translate(28px,-18px) scale(1.04);} 66%{transform:translate(-18px,28px) scale(.96);} }
+
+    #heroCanvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+    .hero-inner {
+        max-width: 1200px; margin: 0 auto; padding: 130px 28px 90px;
+        display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 64px;
+        position: relative; z-index: 2;
+    }
+
+    /* Pill badge */
+    .hero-pill {
+        display: inline-flex; align-items: center; gap: 9px;
+        background: rgba(212,175,55,.12); border: 1px solid rgba(212,175,55,.3);
+        color: var(--gold-light); padding: 7px 18px; border-radius: 50px;
+        font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+        margin-bottom: 26px; backdrop-filter: blur(8px);
+    }
+    .hero-pill::before {
+        content: ''; width: 7px; height: 7px; background: var(--gold);
+        border-radius: 50%; animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:.4;transform:scale(1.6);} }
+
+    .hero-title {
+        font-size: clamp(28px, 4.2vw, 58px); font-weight: 900; color: #fff;
+        line-height: 1.15; margin-bottom: 20px;
+    }
+    .hero-title .t-green { color: var(--bright-green); }
+    .hero-title .t-gold  {
+        background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero-sub {
+        font-size: clamp(13px, 1.6vw, 16px); color: rgba(255,255,255,.62);
+        line-height: 1.8; margin-bottom: 38px; max-width: 460px; font-weight: 400;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ── LOGO VISUAL (right column) ── */
+    .hero-logo-side { display: flex; align-items: center; justify-content: center; }
+
+    .logo-frame {
+        position: relative;
+        width: clamp(300px, 44vw, 540px);
+        height: clamp(300px, 44vw, 540px);
+        flex-shrink: 0;
+    }
+
+    /* Spinning conic gradient ring */
+    .logo-ring {
+        position: absolute; inset: -20px; border-radius: 50%;
+        background: conic-gradient(from 0deg, var(--gold), var(--bright-green) 35%, var(--gold) 70%, var(--bright-green) 100%);
+        animation: spinRing 9s linear infinite;
+        opacity: .28; filter: blur(1px);
+    }
+    @keyframes spinRing { from{transform:rotate(0);} to{transform:rotate(360deg);} }
+
+    /* Second orbit ring */
+    .logo-orbit {
+        position: absolute; inset: -44px; border-radius: 50%;
+        border: 1.5px dashed rgba(212,175,55,.22);
+        animation: spinRing 22s linear infinite reverse;
+    }
+    .logo-orbit-dot {
+        position: absolute; width: 9px; height: 9px;
+        background: var(--gold); border-radius: 50%;
+        top: 50%; left: -4.5px; margin-top: -4.5px;
+        box-shadow: 0 0 12px 3px var(--gold);
+    }
+
+    /* Transparent disc — pure container, logo fills it entirely */
+    .logo-disc {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        z-index: 1;
+    }
+
+    .logo-img {
+        width: 100%; height: 100%;
+        object-fit: contain; object-position: center;
+        filter:
+            drop-shadow(0 0 40px rgba(120,190,32,.75))
+            drop-shadow(0 0 80px rgba(120,190,32,.35));
+    }
+
+    /* Glow pulse behind logo */
+    .logo-glow {
+        position: absolute; inset: -30px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(120,190,32,.25) 0%, transparent 65%);
+        animation: glowPulse 3.5s ease-in-out infinite;
+    }
+    @keyframes glowPulse { 0%,100%{opacity:.6;transform:scale(1);} 50%{opacity:1;transform:scale(1.08);} }
+
+    /* Scroll indicator */
+    .scroll-hint {
+        position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+        z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+        color: rgba(255,255,255,.3); font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+        animation: scrollBounce 2.8s ease-in-out infinite;
+    }
+    @keyframes scrollBounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-10px);} }
+
+    /* ================================================================
+       BUTTONS
+    ================================================================ */
+    .btn {
+        display: inline-flex; align-items: center; gap: 9px;
+        padding: 14px 28px; border-radius: 50px;
+        font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700;
+        cursor: pointer; border: none; letter-spacing: .4px; transition: var(--ease);
+        position: relative; overflow: hidden;
+    }
+    .btn::after { content:''; position:absolute; inset:0; background:rgba(255,255,255,0); transition:var(--ease); }
+    .btn:hover::after { background:rgba(255,255,255,.08); }
+    .btn:active { transform: scale(.97) !important; }
+
+    .btn-gold {
+        background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        color: #0D2618;
+        box-shadow: 0 8px 28px rgba(212,175,55,.45);
+    }
+    .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(212,175,55,.6); }
+
+    .btn-ghost {
+        background: rgba(255,255,255,.08); color: #fff;
+        border: 1.5px solid rgba(255,255,255,.25);
+        backdrop-filter: blur(8px);
+    }
+    .btn-ghost:hover { transform: translateY(-3px); background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.5); }
+
+    .btn-green {
+        background: linear-gradient(135deg, var(--bright-green), #5daa14);
+        color: #fff;
+        box-shadow: 0 8px 28px rgba(120,190,32,.4);
+    }
+    .btn-green:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(120,190,32,.55); }
+
+    .btn-tg {
+        background: linear-gradient(135deg, #229ED9, #0088CC); color: #fff;
+        box-shadow: 0 8px 28px rgba(34,158,217,.4);
+        padding: 17px 36px; font-size: 15px;
+    }
+    .btn-tg:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(34,158,217,.65); }
+
+    .btn-wa {
+        background: linear-gradient(135deg, #25D366, #128C7E); color: #fff;
+        box-shadow: 0 8px 28px rgba(37,211,102,.4);
+        padding: 17px 36px; font-size: 15px;
+    }
+    .btn-wa:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(37,211,102,.65); }
+
+    .btn-ig {
+        background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        color: #fff; box-shadow: 0 8px 28px rgba(220,39,67,.4);
+        padding: 17px 36px; font-size: 15px;
+    }
+    .btn-ig:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(220,39,67,.6); }
+
+    .btn-discord {
+        background: linear-gradient(135deg, #5865F2, #404EED); color: #fff;
+        box-shadow: 0 8px 28px rgba(88,101,242,.4);
+        padding: 17px 36px; font-size: 15px;
+    }
+    .btn-discord:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(88,101,242,.65); }
+
+    /* ================================================================
+       SECTION COMMONS
+    ================================================================ */
+    .section-wrap { padding: 100px 0; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+
+    .eyebrow {
+        display: inline-flex; align-items: center; gap: 10px;
+        font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+        color: var(--bright-green); margin-bottom: 14px;
+    }
+    .eyebrow::before, .eyebrow::after {
+        content: ''; height: 1.5px; background: var(--bright-green); min-width: 20px; max-width: 28px;
+    }
+
+    .s-title { font-size: clamp(26px, 3.5vw, 46px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+    .s-desc  { font-size: 15px; color: var(--text-gray); line-height: 1.78; max-width: 580px; }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity .75s cubic-bezier(.25,.46,.45,.94), transform .75s cubic-bezier(.25,.46,.45,.94); }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1{transition-delay:.1s;} .d2{transition-delay:.2s;} .d3{transition-delay:.3s;}
+    .d4{transition-delay:.4s;} .d5{transition-delay:.5s;} .d6{transition-delay:.6s;}
+
+    /* ================================================================
+       PHILOSOPHY
+    ================================================================ */
+    .philosophy-section {
+        background: linear-gradient(155deg, #061810 0%, #1B4D2E 52%, #0F3520 100%);
+        position: relative; overflow: hidden;
+    }
+    .philosophy-section::before {
+        content: ''; position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath fill='%2378BE20' fill-opacity='0.04' d='M0 80L80 0H60L0 60zm0 0'/%3E%3C/svg%3E");
+    }
+    .philosophy-section .container { position: relative; z-index: 2; text-align: center; }
+    .philosophy-section .eyebrow { color: var(--gold-light); }
+    .philosophy-section .eyebrow::before,
+    .philosophy-section .eyebrow::after { background: var(--gold); }
+    .philosophy-section .s-title { color: #fff; }
+
+    .phil-card {
+        margin-top: 48px;
+        background: rgba(255,255,255,.05);
+        backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(212,175,55,.18);
+        border-radius: var(--r-lg); padding: 58px 72px;
+        position: relative; overflow: hidden;
+        box-shadow:
+            0 0 90px rgba(212,175,55,.07),
+            0 0 180px rgba(120,190,32,.04),
+            inset 0 1px 0 rgba(255,255,255,.07);
+    }
+    .phil-card::before {
+        content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--gold), var(--bright-green), var(--gold), transparent);
+    }
+    .phil-card::after {
+        content: '\201C'; position: absolute; top: -30px; left: 32px;
+        font-size: 220px; color: rgba(212,175,55,.06); font-family: Georgia, serif; line-height: 1; pointer-events: none;
+    }
+
+    .phil-text {
+        font-size: clamp(15px, 1.9vw, 19px); color: rgba(255,255,255,.87);
+        line-height: 1.95; max-width: 760px; margin: 0 auto;
+        position: relative; z-index: 1; font-weight: 400;
+    }
+    .phil-text strong { color: var(--gold-light); font-weight: 700; }
+    .phil-text em     { color: var(--bright-green); font-style: normal; font-weight: 600; }
+
+    /* ================================================================
+       CANDIDATE
+    ================================================================ */
+    .candidate-section { background: var(--off-white); position: relative; overflow: hidden; }
+    .candidate-section::before {
+        content: ''; position: absolute; top: 0; right: 0; width: 35%; height: 100%;
+        background: linear-gradient(135deg, transparent, rgba(120,190,32,.04));
+    }
+
+    .cand-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; position: relative; z-index: 1; }
+
+    /* Photo */
+    .cand-photo-wrap { position: relative; }
+    .cand-bg {
+        position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px;
+        background: linear-gradient(135deg, var(--dark-green), var(--mid-green));
+        border-radius: var(--r-lg); z-index: 0;
+    }
+    .cand-frame {
+        position: absolute; top: 16px; left: 16px; right: -16px; bottom: -16px;
+        border: 2px solid var(--gold); border-radius: var(--r-lg); z-index: 0; opacity: .45;
+    }
+    .cand-photo {
+        position: relative; z-index: 1; width: 100%; max-height: 590px;
+        object-fit: cover; object-position: top center;
+        border-radius: var(--r-md);
+        box-shadow: 0 32px 80px rgba(27,77,46,.3);
+    }
+    .cand-badge {
+        position: absolute; bottom: -18px; right: -18px; z-index: 3;
+        background: linear-gradient(135deg, var(--gold), var(--gold-light));
+        color: var(--dark-green); padding: 12px 22px; border-radius: var(--r-sm);
+        font-size: 11px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; line-height: 1.45;
+        box-shadow: 0 8px 24px rgba(212,175,55,.45);
+    }
+
+    /* Text */
+    .cand-content .eyebrow { justify-content: flex-start; }
+    .cand-content .eyebrow::after { display: none; }
+    .cand-hi { font-size: 14px; font-weight: 600; color: var(--bright-green); margin-bottom: 6px; }
+    .cand-name { font-size: clamp(30px, 3.2vw, 50px); font-weight: 900; color: var(--dark-green); line-height: 1.1; margin-bottom: 24px; }
+    .cand-name span {
+        background: linear-gradient(135deg, var(--bright-green), #4a9a10);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .cand-text { font-size: 14.5px; color: var(--text-gray); line-height: 1.9; margin-bottom: 32px; }
+    .cand-text strong { color: var(--dark-green); font-weight: 700; }
+
+    /* ================================================================
+       EVENTS
+    ================================================================ */
+    .events-section { background: var(--white); }
+    .events-header { text-align: center; margin-bottom: 60px; }
+    .events-header .eyebrow { justify-content: center; }
+    .events-header .s-title { color: var(--dark-green); }
+    .events-header .s-desc  { margin: 0 auto; text-align: center; }
+
+    .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
+
+    .ev-card {
+        background: var(--white);
+        border: 1px solid rgba(27,77,46,.08);
+        border-radius: var(--r-md); padding: 26px;
+        position: relative; overflow: hidden; transition: var(--ease);
+        box-shadow: 0 4px 24px rgba(27,77,46,.07);
+    }
+    .ev-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, var(--dark-green), var(--bright-green));
+        opacity: 0; transition: var(--ease);
+    }
+    .ev-card:hover { transform: translateY(-8px); box-shadow: 0 24px 60px rgba(27,77,46,.15); border-color: rgba(120,190,32,.2); }
+    .ev-card:hover::before { opacity: 1; }
+
+    .ev-card.serpyn { background: linear-gradient(145deg, #f5fff0, #eafae0); border-color: rgba(120,190,32,.15); }
+    .ev-card.serpyn::before { background: linear-gradient(90deg, var(--gold), var(--bright-green)); }
+
+    .ev-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .ev-date { font-size: 11px; font-weight: 800; color: var(--dark-green); letter-spacing: .8px; text-transform: uppercase; line-height: 1.45; }
+    .ev-time { font-size: 10px; color: var(--text-gray); font-weight: 600; margin-top: 2px; }
+
+    .ev-tag { font-size: 9.5px; font-weight: 800; padding: 4px 11px; border-radius: 20px; letter-spacing: .4px; white-space: nowrap; flex-shrink: 0; }
+    .tag-free   { background: rgba(120,190,32,.12); color: #387810; border: 1px solid rgba(120,190,32,.25); }
+    .tag-form   { background: rgba(212,175,55,.14); color: #7a6000; border: 1px solid rgba(212,175,55,.3); }
+    .tag-online { background: rgba(34,158,217,.1);  color: #005e96; border: 1px solid rgba(34,158,217,.25); }
+
+    .ev-title    { font-size: 16px; font-weight: 800; color: var(--dark-green); line-height: 1.35; margin-bottom: 8px; }
+    .ev-location { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--text-gray); font-weight: 500; margin-bottom: 8px; }
+    .ev-org      { font-size: 10.5px; font-weight: 700; color: var(--bright-green); margin-bottom: 10px; letter-spacing: .3px; }
+    .ev-desc     { font-size: 12.5px; color: var(--text-gray); line-height: 1.75; margin-bottom: 16px; }
+
+    .btn-form {
+        display: inline-flex; align-items: center; gap: 7px;
+        background: linear-gradient(135deg, var(--bright-green), #5daa14);
+        color: #fff; font-family: 'Montserrat', sans-serif;
+        font-size: 11.5px; font-weight: 700; padding: 10px 20px; border-radius: 50px;
+        border: none; cursor: pointer; transition: var(--ease); letter-spacing: .3px;
+        box-shadow: 0 4px 16px rgba(120,190,32,.35);
+    }
+    .btn-form:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(120,190,32,.5); }
+
+    /* ================================================================
+       CONTACT
+    ================================================================ */
+    .contact-section {
+        background: linear-gradient(150deg, #061810 0%, #1B4D2E 60%, #0F3520 100%);
+        position: relative; overflow: hidden; text-align: center;
+    }
+    .contact-section::before {
+        content: ''; position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+        width: 750px; height: 750px;
+        background: radial-gradient(circle, rgba(212,175,55,.08), transparent 65%);
+        pointer-events: none;
+    }
+    .contact-section .container { position: relative; z-index: 2; }
+    .contact-section .eyebrow { color: var(--gold-light); justify-content: center; }
+    .contact-section .eyebrow::before,
+    .contact-section .eyebrow::after { background: var(--gold); }
+    .contact-section .s-title { color: #fff; }
+    .contact-section .s-desc  { color: rgba(255,255,255,.65); margin: 0 auto 48px; text-align: center; }
+
+    .contact-btns { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+
+    /* ================================================================
+       FOOTER
+    ================================================================ */
+    .footer { background: #040d07; padding: 54px 0 42px; text-align: center; }
+    .footer-logo { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .footer-logo span { color: var(--gold); }
+    .footer-tag { font-size: 13px; color: rgba(255,255,255,.42); font-style: italic; margin-bottom: 22px; }
+    .footer-line { width: 80px; height: 1.5px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto 22px; }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,.22); }
+    .cronos { margin-top: 24px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,.14); letter-spacing: 2.5px; text-transform: uppercase; }
+    .cronos span { color: rgba(212,175,55,.35); font-weight: 800; }
+
+    /* ================================================================
+       RESPONSIVE
+    ================================================================ */
+    @media (max-width: 900px) {
+        .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 50px; }
+        .hero-content { order: 2; }
+        .hero-logo-side { order: 1; }
+        .hero-sub { margin-left: auto; margin-right: auto; }
+        .hero-btns { justify-content: center; }
+        .logo-frame { width: clamp(260px, 78vw, 400px); height: clamp(260px, 78vw, 400px); }
+        .cand-grid { grid-template-columns: 1fr; gap: 52px; }
+        .cand-photo-wrap { max-width: 380px; margin: 0 auto; }
+        .phil-card { padding: 38px 26px; }
+    }
+    @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .burger { display: flex; }
+        .events-grid { grid-template-columns: 1fr; }
+        .section-wrap { padding: 72px 0; }
+    }
+    @media (max-width: 480px) {
+        .hero-btns { flex-direction: column; align-items: center; }
+        .btn { width: 100%; max-width: 300px; justify-content: center; }
+        .contact-btns { flex-direction: column; align-items: center; }
+        .btn-tg, .btn-wa { width: 100%; max-width: 300px; justify-content: center; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     NAVBAR
+══════════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+    <div class="nav-inner">
+        <a href="#hero" class="nav-brand">
+            <img src="./лого серпин.png" alt="NIS Serpyn Logo" class="nav-logo-img">
+            <div class="nav-brand-text">NIS <em>Serpyn</em></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#hero">Главная</a></li>
+            <li><a href="#philosophy">Философия</a></li>
+            <li><a href="#candidate">О кандидате</a></li>
+            <li><a href="#events">Ивенты</a></li>
+            <li><a href="#contact">Связь</a></li>
+        </ul>
+        <div class="burger" id="burgerBtn" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div class="mob-overlay" id="mobOverlay">
+    <span class="mob-close" id="mobClose">&#x2715;</span>
+    <a href="#hero"       onclick="closeMob()">Главная</a>
+    <a href="#philosophy" onclick="closeMob()">Философия</a>
+    <a href="#candidate"  onclick="closeMob()">О кандидате</a>
+    <a href="#events"     onclick="closeMob()">Ивенты</a>
+    <a href="#contact"    onclick="closeMob()">Связь</a>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section class="hero" id="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <canvas id="heroCanvas"></canvas>
+
+    <div class="hero-inner">
+        <!-- Left: text -->
+        <div class="hero-content">
+            <div class="hero-pill">⚡ Предвыборная кампания 2026</div>
+            <h1 class="hero-title">
+                Импульс нового<br>
+                <span class="t-green">поколения:</span><br>
+                Вперед вместе<br>
+                <span class="t-gold">с NIS Serpyn!</span>
+            </h1>
+            <p class="hero-sub">
+                Официальный сайт предвыборной кампании кандидата в президенты Назарбаев Интеллектуальной Школы. Голосуй за перемены!
+            </p>
+            <div class="hero-btns">
+                <a href="#events" class="btn btn-gold">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Смотреть Ивенты
+                </a>
+                <a href="#contact" class="btn btn-ghost">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Задать вопрос
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: logo -->
+        <div class="hero-logo-side">
+            <div class="logo-frame">
+                <div class="logo-glow"></div>
+                <div class="logo-ring"></div>
+                <div class="logo-orbit">
+                    <div class="logo-orbit-dot"></div>
+                </div>
+                <div class="logo-disc">
+                    <img src="./лого серпин.png" alt="NIS Serpyn Party Logo" class="logo-img">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-hint">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        Scroll
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     PHILOSOPHY
+══════════════════════════════════════════════ -->
+<section class="section-wrap philosophy-section" id="philosophy">
+    <div class="container">
+        <div class="eyebrow reveal d1">Наши ценности</div>
+        <h2 class="s-title reveal d2">Философия команды «Serpyn»</h2>
+        <div class="phil-card reveal d3">
+            <p class="phil-text">
+                «<strong>Серпін</strong> — это не просто название, это <em>синергия движения и мощного импульса</em>. Наша миссия — придать школе новый вектор развития, сделать школьную жизнь <strong>яркой</strong>, а систему — <strong>прозрачной и открытой</strong> для каждого ученика.
+                <br><br>
+                Мы не просто меняем настоящее, мы закладываем <strong>прочный и нерушимый фундамент</strong> для будущих поколений НИШ!»
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CANDIDATE
+══════════════════════════════════════════════ -->
+<section class="section-wrap candidate-section" id="candidate">
+    <div class="container">
+        <div class="cand-grid">
+
+            <!-- Photo column -->
+            <div class="cand-photo-wrap reveal">
+                <div class="cand-bg"></div>
+                <div class="cand-frame"></div>
+                <img
+                    src="./WhatsApp Image 2026-09-12 at 09.24.30.jpg"
+                    alt="Мади — Кандидат в президенты NIS Serpyn"
+                    class="cand-photo"
+                >
+                <div class="cand-badge">Кандидат<br>в Президенты NIS</div>
+            </div>
+
+            <!-- Text column -->
+            <div class="cand-content">
+                <div class="eyebrow reveal">О кандидате</div>
+                <div class="cand-hi reveal d1">👋 Привет, дорогой НИШевец!</div>
+                <h2 class="cand-name reveal d2">Ваш кандидат —<br><span>Мади</span></h2>
+                <p class="cand-text reveal d3">
+                    Я — Мади, кандидат в президенты школы от кампании «Serpyn».
+                    <br><br>
+                    Моя главная цель — дать нашей любимой школе <strong>новый импульс</strong> для масштабного развития, создав среду, в которой каждому из вас будет комфортно учиться, творить и воплощать самые амбициозные идеи.
+                    <br><br>
+                    Я планирую направить всю свою энергию на реализацию полезных школьных проектов, кардинальное улучшение ученического быта и всестороннюю поддержку активистов.
+                    <br><br>
+                    <strong>Давайте объединим наши силы, чтобы двигаться вперед и делать NIS лучше каждый день!</strong>
+                </p>
+                <a href="#contact" class="btn btn-green reveal d4" style="width:fit-content;">
+                    ⚡ Поддержать Мади
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     EVENTS
+══════════════════════════════════════════════ -->
+<section class="section-wrap events-section" id="events">
+    <div class="container">
+        <div class="events-header">
+            <div class="eyebrow reveal">Расписание</div>
+            <h2 class="s-title reveal d1">Календарь Ивентов и Мероприятий</h2>
+            <p class="s-desc reveal d2">Присоединяйся к нашим событиям — заряжайся энергией и стань частью истории NIS Serpyn!</p>
+        </div>
+
+        <div class="events-grid">
+
+            <!-- ── Event 1 ── -->
+            <div class="ev-card serpyn reveal">
+                <div class="ev-top">
+                    <div>
+                        <div class="ev-date">8 СЕН (ВТ)</div>
+                        <div class="ev-time">15:10 – 17:00</div>
+                    </div>
+                    <span class="ev-tag tag-form">Google Forms</span>
+                </div>
+                <h3 class="ev-title">⚽ Футбольный турнир среди 8-х классов</h3>
+                <div class="ev-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Футбольное поле
+                </div>
+                <div class="ev-org">🏆 Организатор: NIS Serpyn</div>
+                <p class="ev-desc">Динамичный турнир в формате «Групповой этап ➔ Плей-офф» с тремя призовыми местами! Лучшие игроки получат уникальный шанс войти в сборную школы.</p>
+                <a href="https://docs.google.com/forms/d/1O-xR65Erek8h74XdIcWwOQVKECvfydtSmjJgey8-sws/viewform" target="_blank" class="btn-form">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Записаться в Google Forms
+                </a>
+            </div>
+
+            <!-- ── Event 2 ── -->
+            <div class="ev-card reveal d1">
+                <div class="ev-top">
+                    <div>
+                        <div class="ev-date">9 СЕН (СР)</div>
+                        <div class="ev-time">15:15 – 16:15</div>
+                    </div>
+                    <span class="ev-tag tag-free">Без регистрации</span>
+                </div>
+                <h3 class="ev-title">🎨 Сочный арт: Жемісті миниатюралар</h3>
+                <div class="ev-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    246 кабинет
+                </div>
+                <div class="ev-org">🎭 Кафедра искусства (Әбдікерімова І.Б.)</div>
+                <p class="ev-desc">«Сочный арт: Жемісті миниатюралар» тақырыбында мектеп ұжымына арналған шебер сағат — вдохновляющий мастер-класс по фруктовым миниатюрам.</p>
+            </div>
+
+            <!-- ── Event 3 ── -->
+            <div class="ev-card serpyn reveal d2">
+                <div class="ev-top">
+                    <div>
+                        <div class="ev-date">10–11 СЕН</div>
+                        <div class="ev-time">08:00 – 16:00</div>
+                    </div>
+                    <span class="ev-tag tag-free">Без регистрации</span>
+                </div>
+                <h3 class="ev-title">📿 Создание браслетов — Back to 2017</h3>
+                <div class="ev-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Коридор 2 этажа (у каб. 246)
+                </div>
+                <div class="ev-org">⚡ Организатор: NIS Serpyn</div>
+                <p class="ev-desc">На каждой перемене и до 16:00 подходи к столам у 246 кабинета и создавай стильные кастомные браслеты своими руками. Приводи друзей!</p>
+            </div>
+
+            <!-- ── Event 4 ── -->
+            <div class="ev-card reveal d3">
+                <div class="ev-top">
+                    <div>
+                        <div class="ev-date">11 СЕН (ПТ)</div>
+                        <div class="ev-time">13:15 – 13:40</div>
+                    </div>
+                    <span class="ev-tag tag-free">Без регистрации</span>
+                </div>
+                <h3 class="ev-title">🌺 "ETHNO-SABANTOI" мәдени фестиваль</h3>
+                <div class="ev-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Фойе 2 этажа
+                </div>
+                <div class="ev-org">🎭 Кафедра искусства (Калиева Б.Д.)</div>
+                <p class="ev-desc">Яркий культурный фестиваль, погружающий в традиции и творческое наследие народов Казахстана.</p>
+            </div>
+
+            <!-- ── Event 5 ── -->
+            <div class="ev-card serpyn reveal d4">
+                <div class="ev-top">
+                    <div>
+                        <div class="ev-date">11 СЕН (ПТ)</div>
+                        <div class="ev-time">15:20 – 16:05</div>
+                    </div>
+                    <span class="ev-tag tag-form">Google Forms</span>
+                </div>
+                <h3 class="ev-title">🧠 Интеллектуальный КВИЗ.ПЛИЗ</h3>
+                <div class="ev-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Абай залы
+                </div>
+                <div class="ev-org">⚡ Организатор: NIS Serpyn</div>
+                <p class="ev-desc">Викторина на логику, включающая вопросы на самые разные темы — от науки до поп-культуры! Командный дух и эрудиция в действии.</p>
+                <a href="https://docs.google.com/forms/d/1eE6bArrwzEEhUqYHZjp4ckDBR4huQhT-p-ESnxG3Pa0/viewform" target="_blank" class="btn-form">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Записаться в Google Forms
+                </a>
+            </div>
+
+            <!-- ── Event 6 ── -->
+            <div class="ev-card reveal d5">
+                <div class="ev-top">
+                    <div>
+                        <div class="ev-date">12–13 СЕН</div>
+                        <div class="ev-time">Весь день</div>
+                    </div>
+                    <span class="ev-tag tag-online">Онлайн</span>
+                </div>
+                <h3 class="ev-title">🎮 Киберспортивный Турнир CS2 (5×5)</h3>
+                <div class="ev-location">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Онлайн
+                </div>
+                <div class="ev-org">⚡ Организатор: NIS Serpyn</div>
+                <p class="ev-desc">Масштабные баталии 5 на 5 за звание сильнейшей команды школы! Собери команду и вступи в схватку за киберпервенство НИШ.</p>
+                <a href="https://docs.google.com/forms/d/1kyxBX-71UEmTB501HG9oymhS8OG4S4A3mwpc_P2NYyc/viewform" target="_blank" class="btn-form">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    Записаться в Google Forms
+                </a>
+            </div>
+
+        </div><!-- /events-grid -->
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     CONTACT
+══════════════════════════════════════════════ -->
+<section class="section-wrap contact-section" id="contact">
+    <div class="container">
+        <div class="eyebrow reveal">Обратная связь</div>
+        <h2 class="s-title reveal d1">Есть идеи, вопросы<br>или предложения?</h2>
+        <p class="s-desc reveal d2">
+            Мы открыты для каждого! Твоя идея может стать частью нашей предвыборной программы.
+        </p>
+        <div class="contact-btns reveal d3">
+            <a href="https://t.me/AltyAltyZheti" target="_blank" class="btn btn-tg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.12 14.607l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.696.979z"/></svg>
+                Написать в Telegram
+            </a>
+            <a href="https://wa.me/77776844366" target="_blank" class="btn btn-wa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                Написать в WhatsApp
+            </a>
+            <a href="https://www.instagram.com/nis.serpyn?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" class="btn btn-ig">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                Instagram @nis.serpyn
+            </a>
+            <a href="https://discord.gg/ahbZWZFv5" target="_blank" class="btn btn-discord">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.09.119 18.12.149 18.14a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                Discord: Minecraft сервер
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-logo">NIS <span>Serpyn</span></div>
+        <div class="footer-tag">«Твой голос — импульс к переменам!»</div>
+        <div class="footer-line"></div>
+        <div class="footer-copy">© 2026 Предвыборная кампания «NIS Serpyn». Все права защищены.</div>
+        <div class="cronos">Created by <span>CRONOS startup</span></div>
+    </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════ -->
+<script>
+/* ── Navbar scroll ── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+/* ── Burger / Mobile menu ── */
+const burgerBtn  = document.getElementById('burgerBtn');
+const mobOverlay = document.getElementById('mobOverlay');
+const mobClose   = document.getElementById('mobClose');
+
+function openMob() {
+    burgerBtn.classList.add('active');
+    mobOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeMob() {
+    burgerBtn.classList.remove('active');
+    mobOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+burgerBtn.addEventListener('click', () => mobOverlay.classList.contains('open') ? closeMob() : openMob());
+mobClose.addEventListener('click', closeMob);
+mobOverlay.addEventListener('click', (e) => { if (e.target === mobOverlay) closeMob(); });
+
+/* ── Hero canvas particles ── */
+(function() {
+    const canvas = document.getElementById('heroCanvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, particles;
+
+    const COLS = [
+        'rgba(120,190,32,',
+        'rgba(212,175,55,',
+        'rgba(200,230,150,',
+        'rgba(255,255,255,',
+    ];
+
+    function resize() {
+        W = canvas.width  = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+    }
+
+    function mkParticle() {
+        return {
+            x:    Math.random() * W,
+            y:    Math.random() * H,
+            r:    .5 + Math.random() * 2.2,
+            vx:   (Math.random() - .5) * .45,
+            vy:   (Math.random() - .5) * .45,
+            col:  COLS[Math.floor(Math.random() * COLS.length)],
+            opa:  .1 + Math.random() * .55,
+            dir:  Math.random() > .5 ? .004 : -.004,
+        };
+    }
+
+    function init(n) { particles = Array.from({ length: n }, mkParticle); }
+
+    function loop() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+            p.x   += p.vx;  p.y   += p.vy;
+            p.opa += p.dir;
+            if (p.opa < .05 || p.opa > .7) p.dir *= -1;
+            if (p.x < 0) p.x = W;  if (p.x > W) p.x = 0;
+            if (p.y < 0) p.y = H;  if (p.y > H) p.y = 0;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.col + p.opa + ')';
+            ctx.fill();
+        });
+        requestAnimationFrame(loop);
+    }
+
+    resize();
+    init(100);
+    loop();
+    window.addEventListener('resize', () => { resize(); init(100); }, { passive: true });
+})();
+
+/* ── Scroll reveal ── */
+const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('in');
+            revealObs.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>
